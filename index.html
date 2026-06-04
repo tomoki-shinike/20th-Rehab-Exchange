@@ -96,7 +96,7 @@ section{padding:64px 24px;}
 
 /* ---- PARTICIPANTS ---- */
 .participants{background:var(--gray-50);}
-.participant-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}
+.participant-grid{display:flex;flex-wrap:nowrap;gap:16px;}
 .participant-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:24px 12px 20px;text-align:center;box-shadow:var(--shadow-sm);transition:all .2s;}
 .participant-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
 /* SVGイラスト風アイコン */
@@ -178,11 +178,166 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
   .about-grid,.venue-grid,.contact-cards{grid-template-columns:1fr;}
   .hero-meta{flex-direction:column;gap:8px;}
   .nav-links{display:none;}
-  .participant-grid{grid-template-columns:repeat(3,1fr);}
+  /* carousel handles layout */
 }
 @media(max-width:500px){
-  .participant-grid{grid-template-columns:repeat(2,1fr);}
+  /* carousel handles layout */
 }
+/* ---- FAB ---- */
+.fab{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:var(--sky);
+  box-shadow:0 4px 20px rgba(30,127,196,0.45);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  transition:all .25s;
+  cursor:pointer;
+  border:none;
+  position:relative;
+}
+.fab:hover{
+  background:var(--sky-light);
+  transform:scale(1.1);
+  box-shadow:0 6px 28px rgba(30,127,196,0.55);
+}
+.fab svg{
+  width:26px;
+  height:26px;
+  stroke:#fff;
+  fill:none;
+  stroke-width:2.2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.fab-tooltip{
+  position:absolute;
+  right:66px;
+  background:var(--navy);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  padding:6px 12px;
+  border-radius:6px;
+  white-space:nowrap;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .2s;
+}
+.fab-tooltip::after{
+  content:'';
+  position:absolute;
+  top:50%;
+  right:-6px;
+  transform:translateY(-50%);
+  border:6px solid transparent;
+  border-left-color:var(--navy);
+  border-right:none;
+}
+.fab:hover .fab-tooltip{opacity:1;}
+.fab-wrap{
+  position:fixed;
+  bottom:28px;
+  right:28px;
+  z-index:999;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:4px;
+  transition:opacity .3s, transform .3s;
+}
+.fab-wrap.hidden{
+  opacity:0;
+  pointer-events:none;
+  transform:scale(0.7);
+}
+.fab-inner{position:relative;display:inline-block;}
+.fab-close{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  width:20px;height:20px;
+  border-radius:50%;
+  background:#fff;
+  border:1.5px solid var(--gray-200);
+  box-shadow:0 2px 6px rgba(0,0,0,0.18);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  color:var(--gray-500);
+  padding:0;
+  transition:all .2s;
+  z-index:10;
+}
+.fab-close:hover{background:var(--sky-pale);border-color:var(--sky);color:var(--sky);}
+.fab-close svg{width:10px;height:10px;}
+
+/* ---- スクロールアニメーション ---- */
+.timeline-item{
+  opacity:0;
+  transform:translateY(32px);
+  transition:opacity .9s ease, transform .9s ease;
+}
+.timeline-item.is-visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ---- カルーセル（参加者） ---- */
+.carousel-outer{padding:0 40px;position:relative;}
+.carousel-wrap{overflow:hidden;touch-action:pan-y;}
+.carousel-track{
+  display:flex;
+  gap:16px;
+  transition:transform .4s cubic-bezier(.4,0,.2,1);
+  will-change:transform;
+}
+.carousel-track .participant-card{
+  flex:0 0 calc(20% - 13px);
+  min-width:130px;
+}
+@media(max-width:900px){
+  .carousel-track .participant-card{flex:0 0 calc(33.333% - 11px);}
+  .carousel-outer{padding:0 36px;}
+}
+@media(max-width:600px){
+  .carousel-track .participant-card{flex:0 0 calc(50% - 8px);}
+}
+@media(max-width:380px){
+  .carousel-track .participant-card{flex:0 0 100%;}
+}
+.carousel-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:36px;height:36px;
+  border-radius:50%;
+  background:var(--white);
+  border:1.5px solid var(--gray-200);
+  box-shadow:var(--shadow-md);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  z-index:10;
+  transition:all .2s;
+}
+.carousel-btn:hover{background:var(--sky-pale);border-color:var(--sky);}
+.carousel-btn svg{width:18px;height:18px;stroke:var(--sky);fill:none;stroke-width:2.5;}
+.carousel-btn.prev{left:0;}
+.carousel-btn.next{right:0;}
+.carousel-btn:disabled{opacity:0.3;cursor:default;}
+.carousel-dots{
+  display:flex;justify-content:center;gap:8px;margin-top:18px;
+}
+.carousel-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--gray-200);
+  cursor:pointer;
+  transition:background .2s, transform .2s;
+}
+.carousel-dot.active{background:var(--sky);transform:scale(1.3);}
+
 </style>
 </head>
 <body>
@@ -333,7 +488,12 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
       <div class="divider"></div>
       <p class="section-desc">参加者名簿は準備でき次第、こちらに掲載します。</p>
     </div>
-    <div class="participant-grid">
+    <div class="carousel-outer">
+    <div class="carousel-wrap">
+    <button class="carousel-btn prev" aria-label="前へ">
+      <svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg>
+    </button>
+    <div class="carousel-track participant-grid">
 
       <!-- 理学療法士 -->
       <div class="participant-card">
@@ -375,7 +535,13 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
         <div class="p-unit">名</div>
       </div>
 
-    </div>
+    </div><!-- /.carousel-track -->
+    <button class="carousel-btn next" aria-label="次へ">
+      <svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
+    </button>
+  </div><!-- /.carousel-wrap -->
+  </div><!-- /.carousel-outer -->
+  <div class="carousel-dots"></div>
   </div>
 </section>
 
@@ -604,6 +770,137 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
     </div>
   </div>
 </footer>
+
+
+<!-- FAB -->
+<div class="fab-wrap" id="fabWrap">
+  <div class="fab-inner">
+    <a class="fab" href="https://tomoki-shinike.github.io/System-revision-R8/" target="_blank" rel="noopener" aria-label="情報サイトへ">
+      <span class="fab-tooltip">情報サイトへ</span>
+      <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+    <button class="fab-close" id="fabClose" aria-label="閉じる">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+/* FAB 閉じるボタン */
+(function(){
+  var btn = document.getElementById('fabClose');
+  var wrap = document.getElementById('fabWrap');
+  if(!btn || !wrap) return;
+  btn.addEventListener('click', function(){
+    wrap.classList.add('hidden');
+  });
+})();
+
+/* スクロールアニメーション */
+(function(){
+  var items = document.querySelectorAll('.timeline-item');
+  if(!items.length) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e, i){
+      if(e.isIntersecting){
+        setTimeout(function(){
+          e.target.classList.add('is-visible');
+        }, i * 250);
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.25});
+  items.forEach(function(el){ io.observe(el); });
+})();
+
+/* カルーセル */
+(function(){
+  var outer = document.querySelector('.carousel-outer');
+  var wrap  = document.querySelector('.carousel-wrap');
+  var track = document.querySelector('.carousel-track');
+  if(!outer || !wrap || !track) return;
+
+  var cards = Array.from(track.querySelectorAll('.participant-card'));
+  var total = cards.length;
+  var current = 0;
+
+  function getVisible(){
+    var w = wrap.offsetWidth;
+    if(w <= 380) return 1;
+    if(w <= 600) return 2;
+    if(w <= 900) return 3;
+    return 5;
+  }
+
+  function maxIndex(){
+    return Math.max(0, total - getVisible());
+  }
+
+  function getCardW(){
+    if(!cards[0]) return 0;
+    var style = window.getComputedStyle(track);
+    var gap = parseFloat(style.gap) || 16;
+    return cards[0].offsetWidth + gap;
+  }
+
+  function goTo(idx){
+    current = Math.max(0, Math.min(idx, maxIndex()));
+    track.style.transform = 'translateX(-' + (current * getCardW()) + 'px)';
+    updateDots();
+    updateBtns();
+  }
+
+  /* ドット生成 */
+  var dotsWrap = document.querySelector('.carousel-dots');
+  dotsWrap.innerHTML = '';
+  for(var i=0; i<=maxIndex(); i++){
+    var d = document.createElement('span');
+    d.className = 'carousel-dot' + (i===0?' active':'');
+    d.onclick = (function(idx){ return function(){ goTo(idx); }; })(i);
+    dotsWrap.appendChild(d);
+  }
+
+  function updateDots(){
+    var dots = dotsWrap.querySelectorAll('.carousel-dot');
+    dots.forEach(function(d,i){ d.className = 'carousel-dot'+(i===current?' active':''); });
+  }
+  function updateBtns(){
+    var prev = outer.querySelector('.carousel-btn.prev');
+    var next = outer.querySelector('.carousel-btn.next');
+    if(prev){ prev.disabled = current===0; }
+    if(next){ next.disabled = current>=maxIndex(); }
+  }
+
+  outer.querySelector('.carousel-btn.prev').onclick = function(){ goTo(current-1); };
+  outer.querySelector('.carousel-btn.next').onclick = function(){ goTo(current+1); };
+
+  /* スワイプ */
+  var startX = 0;
+  wrap.addEventListener('touchstart',function(e){ startX = e.touches[0].clientX; },{passive:true});
+  wrap.addEventListener('touchend',function(e){
+    var dx = e.changedTouches[0].clientX - startX;
+    if(Math.abs(dx)>40){ goTo(current + (dx<0?1:-1)); }
+  },{passive:true});
+
+  /* リサイズ時にドット再生成 */
+  var resizeTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function(){
+      dotsWrap.innerHTML = '';
+      for(var i=0; i<=maxIndex(); i++){
+        var d = document.createElement('span');
+        d.className = 'carousel-dot' + (i===current?' active':'');
+        d.onclick = (function(idx){ return function(){ goTo(idx); }; })(i);
+        dotsWrap.appendChild(d);
+      }
+      goTo(Math.min(current, maxIndex()));
+    }, 100);
+  });
+
+  goTo(0);
+})();
+</script>
 
 </body>
 </html>
