@@ -379,9 +379,9 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
   right:28px;
   z-index:999;
   display:flex;
-  flex-direction:row;
+  flex-direction:column;
   align-items:center;
-  gap:10px;
+  gap:8px;
   transition:opacity .3s, transform .3s;
 }
 .fab-label{
@@ -390,18 +390,19 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
   font-size:11px;
   font-weight:700;
   letter-spacing:.08em;
-  padding:6px 12px;
+  padding:5px 11px;
   border-radius:20px;
   white-space:nowrap;
   backdrop-filter:blur(8px);
   border:1px solid rgba(255,255,255,.15);
   box-shadow:0 2px 10px rgba(0,0,0,.25);
   pointer-events:none;
+  text-align:center;
 }
 .fab-wrap.hidden{
   opacity:0;
   pointer-events:none;
-  transform:scale(0.7) translateX(20px);
+  transform:scale(0.7) translateY(10px);
 }
 .fab-inner{position:relative;display:inline-block;}
 .fab-close{
@@ -530,21 +531,21 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
   <div class="hero-overlay"></div>
   <div class="hero-dots"></div>
   <div class="hero-content" id="hero-content">
-    <div class="hero-badge">回復期リハビリテーション 多職種情報交換会</div>
+    <div class="hero-badge">回復期リハビリテーション 多職種連携</div>
     <div class="hero-title word-reveal" id="hero-ttl">回復期セラピスト<br><em>情報交換会</em></div>
     <div class="hero-catch">多職種で知恵を出し合い、患者さんの回復を支える連携を深める</div>
     <div id="hero-stats">
       <div class="stat-item">
         <div class="stat-num"><span id="c-facilities">0</span><span class="stat-unit">施設</span></div>
-        <div class="stat-label">全国の回復期リハビリ施設数</div>
+        <div class="stat-label">全国の回復期リハ施設数</div>
       </div>
       <div class="stat-item">
         <div class="stat-num"><span id="c-wards">0</span><span class="stat-unit">病棟</span></div>
-        <div class="stat-label">全国の回復期リハビリ病棟数</div>
+        <div class="stat-label">回復期リハ病棟数</div>
       </div>
       <div class="stat-item">
         <div class="stat-num"><span id="c-beds">0</span><span class="stat-unit">床</span></div>
-        <div class="stat-label">全国の回復期リハビリ病床数</div>
+        <div class="stat-label">回復期リハ病床数</div>
       </div>
     </div>
   </div><!-- /.hero-content -->
@@ -624,7 +625,7 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
           </div>
           <div class="link-card-body">
             <div class="link-card-title">当法人ホームページ</div>
-            <div class="link-card-desc">三宅医学研究所の各施設・最新情報はこちら</div>
+            <div class="link-card-desc">三宅医学研究所の最新情報はこちら</div>
           </div>
           <span class="link-card-arrow">›</span>
         </a>
@@ -646,7 +647,7 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
           </div>
           <div class="link-card-body">
             <div class="link-card-title">回復期病棟の実績データ</div>
-            <div class="link-card-desc">県内の実績をLooker Studioのダッシュボードにまとめています<br><span style="font-size:11px;color:#aaa;">※数値は転記ですので誤りがございましたら修正いたします</span></div>
+            <div class="link-card-desc"><span style="font-size:11px;color:#aaa;">※数値は転記ですので誤りがございましたら修正いたします</span></div>
           </div>
           <span class="link-card-arrow">›</span>
         </a>
@@ -880,11 +881,6 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
         <span class="news-badge badge-prog">決定</span>
         <span class="news-text">開催日が2026年7月22日（水）19:00〜20:30に決定しました。</span>
       </div>
-      <div class="news-item">
-        <span class="news-date">2026-05-22</span>
-        <span class="news-badge badge-notice">締め切り</span>
-        <span class="news-text">事前アンケートの締め切りです。ご協力ありがとうございました。</span>
-      </div>
     </div>
 
     <!-- アコーディオン：過去のお知らせ -->
@@ -895,6 +891,11 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
       </button>
       <div class="news-accordion-body" id="old-news" hidden>
         <div class="news-list news-list-old">
+          <div class="news-item">
+            <span class="news-date">2026-05-22</span>
+            <span class="news-badge badge-notice">締め切り</span>
+            <span class="news-text">事前アンケートの締め切りです。ご協力ありがとうございました。</span>
+          </div>
           <div class="news-item">
             <span class="news-date">2026-05-02</span>
             <span class="news-badge badge-info">お知らせ</span>
@@ -968,7 +969,7 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
 
 <!-- FAB -->
 <div class="fab-wrap" id="fabWrap">
-  <span class="fab-label" id="fabLabel">会場案内はこちら</span>
+  <span class="fab-label" id="fabLabel">会場はこちら</span>
   <div class="fab-inner">
     <a class="fab" href="#venue" aria-label="会場案内へ">
       <span class="fab-tooltip">会場案内へ</span>
@@ -1312,6 +1313,10 @@ document.querySelectorAll('.mag-btn').forEach(function(btn){
   function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
   resize();
   window.addEventListener('resize',resize);
+
+  /* タッチ判定 */
+  var isTouch='ontouchstart' in window;
+
   var COLORS=[
     {r:0,g:180,b:216},
     {r:26,g:170,b:140},
@@ -1319,10 +1324,19 @@ document.querySelectorAll('.mag-btn').forEach(function(btn){
     {r:30,g:127,b:196},
     {r:100,g:200,b:240},
   ];
-  var N=16;
+
+  /* スマホは水玉を少し大きく・濃くして見えやすく */
+  var N = isTouch ? 18 : 16;
+  var sizeBase = isTouch ? 22 : 16;
+  var sizeRand = isTouch ? 14 : 8;
+  var alphaBase = isTouch ? 0.13 : 0.07;
+  var alphaRand = isTouch ? 0.07 : 0.03;
+  var attractR = isTouch ? 220 : 180;   /* 引き寄せ半径 */
+  var attractF = isTouch ? 0.022 : 0.018; /* 引き寄せ力 */
+
   var blobs=Array.from({length:N},function(_,i){
     var col=COLORS[i%COLORS.length];
-    var r=Math.random()*16+8;
+    var r=Math.random()*sizeRand+sizeBase;
     return{
       x:Math.random()*window.innerWidth,
       y:Math.random()*window.innerHeight,
@@ -1334,17 +1348,47 @@ document.querySelectorAll('.mag-btn').forEach(function(btn){
       rot:Math.random()*Math.PI*2,
       rotV:(Math.random()-.5)*.004,
       col:col,
-      alpha:Math.random()*.07+.03,
+      alpha:Math.random()*alphaRand+alphaBase,
     };
   });
-  var pmx=W/2,pmy=H/2;
-  document.addEventListener('mousemove',function(e){pmx=e.clientX;pmy=e.clientY;});
+
+  /* ポインター座標（PC:マウス / スマホ:タッチ共通で管理） */
+  var pmx=W/2, pmy=H/2;
+  var touching=false;
+
+  /* マウス（PC） */
+  document.addEventListener('mousemove',function(e){
+    pmx=e.clientX; pmy=e.clientY;
+  });
+
+  /* タッチ開始・移動（スマホ） */
+  document.addEventListener('touchstart',function(e){
+    touching=true;
+    pmx=e.touches[0].clientX;
+    pmy=e.touches[0].clientY;
+  },{passive:true});
+  document.addEventListener('touchmove',function(e){
+    pmx=e.touches[0].clientX;
+    pmy=e.touches[0].clientY;
+  },{passive:true});
+  document.addEventListener('touchend',function(){
+    /* 指を離したら引き寄せを止める（画面中央に戻す） */
+    setTimeout(function(){ touching=false; }, 800);
+  },{passive:true});
+
   function draw(){
     ctx.clearRect(0,0,W,H);
     blobs.forEach(function(b){
-      var dx=pmx-b.x,dy=pmy-b.y;
-      var dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<180){b.vx+=dx/dist*.018;b.vy+=dy/dist*.018;}
+      /* スマホで指を離していたら引き寄せなし */
+      var doAttract = isTouch ? touching : true;
+      if(doAttract){
+        var dx=pmx-b.x, dy=pmy-b.y;
+        var dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<attractR && dist>1){
+          b.vx+=dx/dist*attractF;
+          b.vy+=dy/dist*attractF;
+        }
+      }
       var sp=Math.sqrt(b.vx*b.vx+b.vy*b.vy);
       if(sp>.9){b.vx*=.93;b.vy*=.93;}
       b.x+=b.vx;b.y+=b.vy;b.rot+=b.rotV;
@@ -1363,6 +1407,7 @@ document.querySelectorAll('.mag-btn').forEach(function(btn){
       ctx.fill();
       ctx.restore();
     });
+    /* 近い玉同士をライン接続 */
     for(var i=0;i<N;i++){
       for(var j=i+1;j<N;j++){
         var dx=blobs[i].x-blobs[j].x,dy=blobs[i].y-blobs[j].y;
