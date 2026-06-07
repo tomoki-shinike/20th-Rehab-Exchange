@@ -1002,6 +1002,11 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
 (function initWebGL(){
   const canvas=document.getElementById('webgl-canvas');
   if(!canvas||typeof THREE==='undefined')return;
+  /* スマホ（768px以下）はWebGL波形を無効化 */
+  if(window.innerWidth<=768){
+    canvas.style.display='none';
+    return;
+  }
   const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
   renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
   function resize(){
