@@ -31,7 +31,7 @@
   --radius:8px;
   --radius-lg:14px;
 }
-body{font-family:'Noto Sans JP',sans-serif;color:var(--gray-900);background:var(--white);font-size:15px;line-height:1.7;overflow-x:hidden;cursor:none;scroll-snap-type:y proximity;}
+body{font-family:'Noto Sans JP',sans-serif;color:var(--gray-900);background:var(--white);font-size:15px;line-height:1.7;overflow-x:hidden;cursor:none;}
 
 /* ---- NAV (ハンバーガー) ---- */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;background:transparent;transition:background .4s;}
@@ -82,6 +82,15 @@ nav.scrolled{background:rgba(7,30,51,0.88);backdrop-filter:blur(12px);}
   letter-spacing:.06em;
   transition:background .18s, color .18s, padding-left .18s;
   border-left:2px solid transparent;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.nav-drawer a svg{
+  width:17px;height:17px;
+  flex-shrink:0;
+  opacity:.65;
+  transition:opacity .18s;
 }
 .nav-drawer a:hover{
   background:rgba(0,180,216,.1);
@@ -89,6 +98,7 @@ nav.scrolled{background:rgba(7,30,51,0.88);backdrop-filter:blur(12px);}
   border-left-color:var(--accent);
   padding-left:30px;
 }
+.nav-drawer a:hover svg{opacity:1;}
 .nav-drawer-line{
   height:1px;
   background:rgba(255,255,255,.07);
@@ -96,7 +106,15 @@ nav.scrolled{background:rgba(7,30,51,0.88);backdrop-filter:blur(12px);}
 }
 
 /* ---- HERO (v7スタイル) ---- */
-.hero{position:relative;height:100vh;min-height:600px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:0;contain:layout style;scroll-snap-align:start;scroll-snap-stop:always;}
+.hero{
+  position:relative;
+  height:100vh;
+  min-height:600px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  margin-top:0;
+  contain:layout style;
+}
 #webgl-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;}
 .hero-img{
   position:absolute;inset:0;width:100%;height:100%;
@@ -214,7 +232,8 @@ section{padding:64px 24px;}
   letter-spacing:.4em;
   font-family:inherit;
   z-index:5;
-  pointer-events:none;
+  pointer-events:auto;
+  cursor:pointer;
   opacity:0;
   animation:scrollHintIn 1s ease 2.5s forwards, scrollBob 2.5s ease-in-out 3.5s infinite;
 }
@@ -301,7 +320,7 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
 .footer-copy{font-size:12px;color:rgba(255,255,255,0.3);}
 
 /* ---- EVENT BAR ---- */
-.event-bar{background:var(--navy-dk);border-top:3px solid var(--accent);border-bottom:1px solid rgba(0,180,216,.2);padding:28px 24px;scroll-snap-align:start;}
+.event-bar{background:var(--navy-dk);border-top:3px solid var(--accent);border-bottom:1px solid rgba(0,180,216,.2);padding:28px 24px;}
 .event-bar-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:24px;flex-wrap:wrap;position:relative;z-index:3;}
 .event-bar-item{display:flex;align-items:flex-start;gap:12px;flex:1;min-width:220px;}
 .event-bar-item svg{stroke:var(--accent);flex-shrink:0;margin-top:3px;}
@@ -315,8 +334,8 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
 
 /* ---- カーソル ---- */
 #cursor{position:fixed;top:0;left:0;z-index:9999;pointer-events:none;}
-#cursor-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);position:absolute;transform:translate(-50%,-50%);}
-#cursor-ring{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--accent);position:absolute;transform:translate(-50%,-50%);transition:width .3s,height .3s,opacity .3s;opacity:.45;}
+#cursor-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);position:absolute;transform:translate(-50%,-50%);box-shadow:0 0 5px rgba(0,180,216,.7);}
+#cursor-ring{width:24px;height:24px;border-radius:50%;border:1.2px solid var(--accent);position:absolute;transform:translate(-50%,-50%);transition:width .25s,height .25s,opacity .25s,border-color .25s;opacity:.5;}
 
 /* ---- 水玉パーティクル ---- */
 #particle-canvas{position:fixed;inset:0;z-index:1;pointer-events:none;}
@@ -502,6 +521,34 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
 }
 .carousel-dot.active{background:var(--sky);transform:scale(1.3);}
 
+
+/* ---- クリック波紋 ---- */
+.ripple{
+  position:fixed;
+  border-radius:50%;
+  border:1.5px solid rgba(255,235,130,0.85);
+  pointer-events:none;
+  z-index:9998;
+  transform:translate(-50%,-50%) scale(0);
+  opacity:.8;
+  animation:rippleOut .7s cubic-bezier(.2,.6,.4,1) forwards;
+}
+@keyframes rippleOut{
+  to{transform:translate(-50%,-50%) scale(3.6);opacity:0;}
+}
+.ripple2{
+  position:fixed;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,0.3);
+  pointer-events:none;
+  z-index:9997;
+  transform:translate(-50%,-50%) scale(0);
+  opacity:.5;
+  animation:rippleOut2 .9s cubic-bezier(.2,.6,.4,1) .08s forwards;
+}
+@keyframes rippleOut2{
+  to{transform:translate(-50%,-50%) scale(5.8);opacity:0;}
+}
 </style>
 </head>
 <body>
@@ -525,17 +572,35 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
 </nav>
 <!-- フルスクリーンドロワー -->
 <div class="nav-drawer" id="nav-drawer">
-  <a href="#about"      onclick="closeDrawer()">概要</a>
+  <a href="#about" onclick="closeDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    概要
+  </a>
   <div class="nav-drawer-line"></div>
-  <a href="#participants" onclick="closeDrawer()">参加者</a>
+  <a href="#participants" onclick="closeDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    参加者
+  </a>
   <div class="nav-drawer-line"></div>
-  <a href="#program"    onclick="closeDrawer()">プログラム</a>
+  <a href="#program" onclick="closeDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    プログラム
+  </a>
   <div class="nav-drawer-line"></div>
-  <a href="#venue"      onclick="closeDrawer()">会場案内</a>
+  <a href="#venue" onclick="closeDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    会場案内
+  </a>
   <div class="nav-drawer-line"></div>
-  <a href="#news"       onclick="closeDrawer()">お知らせ</a>
+  <a href="#news" onclick="closeDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+    お知らせ
+  </a>
   <div class="nav-drawer-line"></div>
-  <a href="#contact"    onclick="closeDrawer()">お問い合わせ</a>
+  <a href="#contact" onclick="closeDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    お問い合わせ
+  </a>
 </div>
 
 <!-- HERO -->
@@ -564,11 +629,11 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
     </div>
   </div><!-- /.hero-content -->
   <!-- スクロールインジケーター：hero直下・画面最下端固定 -->
-  <div class="scroll-hint" aria-hidden="true">SCROLL</div>
+  <div class="scroll-hint" id="scroll-hint-btn" role="button" aria-label="下へスクロール" tabindex="0">SCROLL</div>
 </div>
 
 <!-- EVENT INFO BAR（ヒーロー直下） -->
-<div class="event-bar">
+<div class="event-bar" id="event-bar">
   <div class="event-bar-inner">
     <div class="event-bar-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -829,14 +894,7 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
             <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
             <span>〒760-0018 香川県高松市天神前５−５</span>
           </div>
-          <div class="venue-detail">
-            <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            <a href="mailto:shinike@miyake.or.jp" style="color:var(--sky);text-decoration:none;">shinike@miyake.or.jp</a>
-          </div>
-          <div class="venue-detail">
-            <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            <span>Tel: 087-831-2101 ／ Fax: 087-835-1886</span>
-          </div>
+
         </div>
         <div style="margin-top:24px;">
           <div style="font-weight:700;color:var(--navy);font-size:14px;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
@@ -1272,6 +1330,24 @@ document.querySelectorAll('.mag-btn').forEach(function(btn){
 </script>
 
 <script>
+/* スクロールヒント：クリックで次セクションへ */
+(function(){
+  var btn = document.getElementById('scroll-hint-btn');
+  if(!btn) return;
+  function scrollDown(){
+    var target = document.getElementById('event-bar') || document.querySelector('.event-bar');
+    if(target){
+      target.scrollIntoView({behavior:'smooth'});
+    } else {
+      window.scrollBy({top: window.innerHeight, behavior:'smooth'});
+    }
+  }
+  btn.addEventListener('click', scrollDown);
+  btn.addEventListener('keydown', function(e){
+    if(e.key==='Enter'||e.key===' ') scrollDown();
+  });
+})();
+
 /* ナビゲーション */
 (function(){
   var burger=document.getElementById('nav-burger');
@@ -1305,23 +1381,68 @@ document.querySelectorAll('.mag-btn').forEach(function(btn){
   },{passive:true});
 })();
 
-/* カーソル追従 */
+/* カーソル追従（中心点＋追従リング） */
 (function(){
-  var dot=document.getElementById('cursor-dot');
-  var ring=document.getElementById('cursor-ring');
-  if(!dot||!ring)return;
-  var mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
+  var dot  = document.getElementById('cursor-dot');
+  var ring = document.getElementById('cursor-ring');
+  if(!dot || !ring) return;
+
+  /* スマホは非表示 */
+  if('ontouchstart' in window){
+    dot.style.display = 'none';
+    ring.style.display = 'none';
+  }
+
+  var mx=0, my=0, rx=0, ry=0;
+  document.addEventListener('mousemove', function(e){ mx=e.clientX; my=e.clientY; });
+
   (function ac(){
-    rx+=(mx-rx)*.13; ry+=(my-ry)*.13;
-    dot.style.cssText='left:'+mx+'px;top:'+my+'px';
-    ring.style.cssText='left:'+rx+'px;top:'+ry+'px';
+    rx += (mx-rx) * 0.13;
+    ry += (my-ry) * 0.13;
+    dot.style.left  = mx + 'px';
+    dot.style.top   = my + 'px';
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
     requestAnimationFrame(ac);
   })();
+
+  /* 波紋生成（サイズ小さめ） */
+  function createRipple(x, y){
+    var size = 22;
+    ['ripple','ripple2'].forEach(function(cls){
+      var el = document.createElement('div');
+      el.className = cls;
+      el.style.cssText = 'left:'+x+'px;top:'+y+'px;width:'+size+'px;height:'+size+'px;';
+      document.body.appendChild(el);
+      el.addEventListener('animationend', function(){ el.remove(); });
+    });
+  }
+
+  /* ホバー：リング拡大＋波紋 */
   document.querySelectorAll('a,button,.participant-card,.timeline-item,.link-card,.mag-btn').forEach(function(el){
-    el.addEventListener('mouseenter',function(){ring.style.width='54px';ring.style.height='54px';ring.style.opacity='0.85';});
-    el.addEventListener('mouseleave',function(){ring.style.width='36px';ring.style.height='36px';ring.style.opacity='0.45';});
+    el.addEventListener('mouseenter', function(){
+      ring.style.width   = '36px';
+      ring.style.height  = '36px';
+      ring.style.opacity = '0.75';
+      ring.style.borderColor = 'rgba(0,180,216,0.9)';
+      createRipple(mx, my);
+    });
+    el.addEventListener('mouseleave', function(){
+      ring.style.width   = '24px';
+      ring.style.height  = '24px';
+      ring.style.opacity = '0.5';
+      ring.style.borderColor = 'var(--accent)';
+    });
   });
+
+  /* クリック：波紋 */
+  document.addEventListener('mousedown', function(e){
+    createRipple(e.clientX, e.clientY);
+  });
+  document.addEventListener('touchstart', function(e){
+    var t = e.touches[0];
+    createRipple(t.clientX, t.clientY);
+  }, {passive:true});
 })();
 
 /* 水玉パーティクル（v7完全移植） */
