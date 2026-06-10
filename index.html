@@ -220,13 +220,14 @@ section{padding:64px 24px;}
 /* ---- スクロールインジケーター（v7：縦線bob） ---- */
 .scroll-hint{
   position:absolute;
-  bottom:20px;
+  /* bob分(8px)＋縦線(36px)＋文字・gap分(24px) を bottom に余裕持たせる */
+  bottom:24px;
   left:50%;
   transform:translateX(-50%);
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:8px;
+  gap:6px;
   color:rgba(255,255,255,.35);
   font-size:9px;
   letter-spacing:.4em;
@@ -239,15 +240,20 @@ section{padding:64px 24px;}
 }
 @keyframes scrollHintIn{to{opacity:1;}}
 @keyframes scrollBob{
+  /* translateX(-50%)を必ず維持しつつ上方向にのみ動かす → 下にはみ出ない */
   0%,100%{transform:translateX(-50%) translateY(0);}
-  50%{transform:translateX(-50%) translateY(8px);}
+  50%{transform:translateX(-50%) translateY(-7px);}
 }
 .scroll-hint::after{
   content:'';
   display:block;
-  width:1px;
-  height:44px;
-  background:linear-gradient(to bottom,rgba(0,180,216,.55),transparent);
+  width:2px;
+  height:36px;
+  border-radius:2px;
+  background:linear-gradient(to bottom,rgba(0,180,216,.85),transparent);
+}
+@media(max-width:768px){
+  .scroll-hint{bottom:20px;}
 }
 
 /* ---- PROGRAM ---- */
