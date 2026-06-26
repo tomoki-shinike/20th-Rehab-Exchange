@@ -381,8 +381,9 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
   .event-bar-btns{margin-left:0;}
 }
 @media(max-width:768px){
-  /* スマホ：ヒーロー画像のtransitionを短縮してアニメ終了を早める */
+  /* スマホ：will-changeを解除してGPUレイヤー再合成を防ぐ */
   .hero-img{
+    will-change:auto;
     transition:filter 1.0s ease, transform 1.2s ease;
   }
   /* スマホ：hero高さをsvh対応（アドレスバー考慮） */
@@ -1619,8 +1620,9 @@ document.addEventListener('keydown', function(e){
     laneW = lane.offsetWidth;
     ambW  = amb.offsetWidth;
     var lr = lane.getBoundingClientRect();
-    /* 出発点：画面左端より少し外 */
-    startX = -ambW - 20;
+    /* 出発点：PCは中央寄り、スマホは左端外から */
+    var isMobileAmb = window.innerWidth < 768;
+    startX = isMobileAmb ? (-ambW - 20) : Math.round(laneW * 0.18);
     /* 終点：実績データカード（ambCard2）の中央 */
     if(target){
       var tr = target.getBoundingClientRect();
@@ -1733,7 +1735,7 @@ document.addEventListener('keydown', function(e){
   var ctx = canvas.getContext('2d');
   var W, H, r; /* r = border-radius（px） */
   var angle = 0; /* 現在の光の角度（ラジアン） */
-  var SPEED = 0.006; /* 回転速度（大きいほど速い） */
+  var SPEED = 0.010; /* 回転速度（大きいほど速い） */
 
   function resize(){
     var rect = canvas.getBoundingClientRect();
