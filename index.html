@@ -381,10 +381,14 @@ footer{background:var(--gray-900);padding:36px 24px 20px;}
   .event-bar-btns{margin-left:0;}
 }
 @media(max-width:768px){
-  /* スマホ：will-changeを解除してGPUレイヤー再合成を防ぐ */
+  /* スマホ：will-change解除＋transformを固定してカクつき防止 */
   .hero-img{
     will-change:auto;
-    transition:filter 1.0s ease, transform 1.2s ease;
+    transform:scale(1) translateZ(0) !important;
+    transition:filter 1.0s ease;
+  }
+  .hero-img.loaded{
+    transform:scale(1) translateZ(0) !important;
   }
   /* スマホ：hero高さをsvh対応（アドレスバー考慮） */
   .hero{
